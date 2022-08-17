@@ -159,6 +159,77 @@ class DbService {
         });
     }
 
+    GetCommentDb(commentId, callback)
+    {
+        this.sql.getConnection((err,connection) => {   
+            connection.query("select * from comments where id=? order by id asc",[commentId], (err,results,fields) => {
+                connection.release();
+                callback(err, results);
+            });
+        }); 
+    }
+
+    AddCommentDb(postId, name, email, body, callback)
+    {
+        this.sql.getConnection((err,connection) => {
+            connection.query("insert into comments (postId, name, email, body) values (?, ?, ?, ?)",[postId, name, email, body], (err, result, fields) => {
+                connection.release();
+                callback(err, result);
+            });
+        });
+    }
+
+    UpdateCommentDb(name, email, body, id, callback)
+    {
+        this.sql.getConnection((err, connection) => {
+            connection.query("update comments set name=?, email=?, body=? where id=?", [name, email, body, id], (err, result, fields) => {
+                connection.release();
+                callback(err, result);
+            });
+        });
+    }
+    
+    UpdateCommentInfoDb(name, email, body, id, callback)
+    {
+        var commentResult;
+        this.sql.getConnection((err, connection) => {
+            if(name && email && body){
+                connection.query("update comments set name=?, email=?, body=? where id=?", [name, email, body, id], (err, result, fields) => {
+                    commentResult = result;
+                });
+            }
+            else {
+                if(name){
+                    connection.query("update comments set name=? where id=?", [name, id], (err, result, fields) => {
+                        commentResult = result;
+                    });
+                }
+                if(email){
+                    connection.query("update comments set email=? where id=?", [email, id], (err, result, fields) => {
+                        commentResult = result;
+                    });
+                }
+                if(body){
+                    connection.query("update comments set body=? where id=?", [body, id], (err, result, fields) => {
+                        commentResult = result;
+                    });
+                }
+            }
+            connection.release();
+            callback(err, commentResult);
+        });
+    }
+
+    DeleteCommentDb(id, callback)
+    {
+        this.sql.getConnection((err, connection) => {
+            connection.query("delete from comments where id=?", [id], (err, result) => {
+                connection.release();
+                callback(err, result);
+            });
+        });
+    }
+
     //#endregion
 }
   
@@ -184,32 +255,3 @@ class DbService {
   })();
   
   module.exports = Singleton;
-// s
-
-
-// class DbService{
-
-//     constructor()
-//     {
-//         this.sql=mysql.createPool({
-//             host:'localhost',
-//             user:'root',
-//             password:'',
-//             port:3306
-//          });
-//          this.sql.query("use nodejsapi");
-//          console.log("DB started!");
-//     }
-
-//     GetPost(postId, callback)
-//     {
-//         this.sql.getConnection((err,connection) => {   
-//             connection.query("select * from posts where id=? order by id asc",[postId], (err,results,fields) => {
-//                 connection.release();
-//                 callback(err, results);
-//             });
-//         }); 
-//     }
-// }
-
-// module.exports = DbService;

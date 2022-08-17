@@ -5,16 +5,7 @@ class PostController{
 
     constructor()
     {
-        // this.DbObj = new DbService();
         this.dbObj = DbService.getInstance();
-        // this.sql=mysql.createPool({
-        //     host:'localhost',
-        //     user:'root',
-        //     password:'',
-        //     port:3306
-        //  });
-        //  this.sql.query("use nodejsapi");
-        //  console.log("DB started!");
     }
 
     GetPostList(req, res)

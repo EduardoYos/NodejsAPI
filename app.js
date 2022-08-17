@@ -81,7 +81,7 @@ app.get(baseUrl + "/comments/:id?", (req, res) => {
 });
 
 app.post(baseUrl + "/comments", (req, res) => {
-    commentObj.AddComment(req, res);
+    commentObj.CreateComment(req, res);
 });
 
 app.patch(baseUrl + "/comments/:id", (req, res) => {
