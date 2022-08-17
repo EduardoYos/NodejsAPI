@@ -3,11 +3,11 @@ const express=require('express');
 const bodyParser=require('body-parser');
 const app=express();
 
-const CommentService=require('./services/CommentService');
-const PostService=require('./services/PostService');
+const CommentController=require('./controllers/CommentController');
+const PostController=require('./controllers/PostController');
 
-let commentObj = new CommentService();
-let postObj = new PostService();
+let commentObj = new CommentController();
+let postObj = new PostController();
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -53,7 +53,7 @@ app.get(baseUrl + "/posts/:id", (req, res) => {
 });
 
 app.post(baseUrl + "/posts", (req, res) => {
-    postObj.AddPost(req, res);''
+    postObj.CreatePost(req, res);
 });
 
  
