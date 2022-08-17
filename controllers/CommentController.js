@@ -26,8 +26,13 @@ class CommentController{
 
     GetComment(req, res)
     {
+        var id = req.params.id;
+        if (!id || isNaN(id)){
+            console.log("invalid id");
+            return res.status(400).send("invalid ID supplied");
+        }
         console.log("getting comment...");
-        this.dbObj.GetCommentDb(req.params.id, (err, results) => {
+        this.dbObj.GetCommentDb(id, (err, results) => {
             if (err){
                 return res.status(500).send({
                     error: err,
@@ -109,6 +114,7 @@ class CommentController{
                     // throw err;
                 } 
                 let responseObj = req.body;
+                responseObj.postId = results[0].postId; 
                 responseObj.id = id; 
                 console.log("updated data!");
                 return res.status(200).send(responseObj);
@@ -158,6 +164,7 @@ class CommentController{
 
                 var resultObj = results[0];
                 resultObj.id = id;
+                resultObj.postId = resultObj.postId; 
                 resultObj.name = name ?? resultObj.name; 
                 resultObj.email = email ?? resultObj.email; 
                 resultObj.body = body ?? resultObj.body; 

@@ -26,8 +26,13 @@ class PostController{
 
     GetPost(req, res)
     {
+        var id = req.params.id;
+        if (!id || isNaN(id)){
+            console.log("invalid id");
+            return res.status(400).send("invalid ID supplied");
+        }
         console.log("getting post...");
-        this.dbObj.GetPostDb(req.params.id, (err, results) => {
+        this.dbObj.GetPostDb(id, (err, results) => {
             if (err){
                 return res.status(500).send({
                     error: err,
@@ -47,8 +52,13 @@ class PostController{
 
     GetPostWithComments(req, res)
     {
+        var id = req.params.id;
+        if (!id || isNaN(id)){
+            console.log("invalid id");
+            return res.status(400).send("invalid ID supplied");
+        }
         console.log("getting post and comments...");
-        this.dbObj.GetPostWithCommentsDb(req.params.id, (err, postResult, commentResult) => {
+        this.dbObj.GetPostWithCommentsDb(id, (err, postResult, commentResult) => {
             if (err){
                 return res.status(500).send({
                     error: err,
